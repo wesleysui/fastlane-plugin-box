@@ -5,7 +5,9 @@ module Fastlane
     class BoxAction < Action
       def self.run(params)
         Actions.verify_gem!('boxr')
-        ipa_file = params[:ipa]
+        ipa_file = params[:src]
+        name = params[:dst]
+
         UI.message("filename: #{ipa_file}")
 
         #JWT methods
@@ -16,13 +18,14 @@ module Fastlane
                                     client_id: ENV['BOX_CLIENT_ID'],
                                     client_secret: ENV['BOX_CLIENT_SECRET'])
 
-
         # client = Boxr::Client.new  #uses ENV['BOX_DEVELOPER_TOKEN']
         client = Boxr::Client.new(token)
 
         folder = client.folder_from_path('/')
-        # client.create_folder()
+        # client.delete_folder(folder, recursive: true)
+
         file = client.upload_file(ipa_file, folder)
+        client.move_file(file, folder, name:name)
         updated_file = client.create_shared_link_for_file(file, access: :open)
         puts "Shared Link: #{updated_file.shared_link.url}"
 
@@ -49,11 +52,16 @@ module Fastlane
 
       def self.available_options
         [
-          FastlaneCore::ConfigItem.new(key: :ipa,
-                                  env_name: "BOX_IPA_FILE",
-                               description: "the provided ipa file name",
-                                  optional: true,
-                                      type: String)
+          FastlaneCore::ConfigItem.new(key: :src,
+                                  env_name: "BOX_FILE_PATH",
+                               description: "the provided ipa file path",
+                                  optional: false,
+                                      type: String),
+          FastlaneCore::ConfigItem.new(key: :dst,
+                                  env_name: "BOX_FILE_NAME",
+                               description: "file name",
+                                  optional: false,
+                                      type: String),
         ]
       end
 

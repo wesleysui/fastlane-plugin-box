@@ -1,4 +1,5 @@
 
+
 lane :upload do
-  box(ipa: 'xxx.ipa')
+  box(src: 'src.ipa', dst: 'dst.ipa')
 end
