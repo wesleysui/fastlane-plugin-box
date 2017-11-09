@@ -16,6 +16,7 @@ module Fastlane
                                     client_id: ENV['BOX_CLIENT_ID'],
                                     client_secret: ENV['BOX_CLIENT_SECRET'])
 
+
         # client = Boxr::Client.new  #uses ENV['BOX_DEVELOPER_TOKEN']
         client = Boxr::Client.new(token)
 
