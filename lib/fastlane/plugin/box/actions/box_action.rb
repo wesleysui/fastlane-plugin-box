@@ -21,7 +21,7 @@ module Fastlane
         client = Boxr::Client.new(token)
 
         folder = client.folder_from_path('/')
-        client.create_folder()
+        # client.create_folder()
         file = client.upload_file(ipa_file, folder)
         updated_file = client.create_shared_link_for_file(file, access: :open)
         puts "Shared Link: #{updated_file.shared_link.url}"
