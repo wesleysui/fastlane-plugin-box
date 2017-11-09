@@ -1,3 +1,4 @@
-lane :test do
-  box
+
+lane :upload do
+  box(ipa: 'xxx.ipa')
 end
